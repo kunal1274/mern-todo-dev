@@ -1,0 +1,134 @@
+body {
+  margin: 0;
+}
+
+/* The gray rounded square behind the clock */
+.under {
+  background-color: rgba(200, 200, 200, 0.9);
+  width: 430px;
+  height: 430px;
+  position: absolute;
+  border-radius: 10px;
+  left: 50%;
+  top: 50%;
+  margin-left: -215px;
+  margin-top: -200px;
+  z-index: 0;
+}
+
+/* Container for the clock. We allow full viewport height. */
+.demo-container.clocks {
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* The clock face itself */
+.clock {
+  border-radius: 50%;
+  /* That subtle “outer glow” using radial-gradient #000 -> #fff -> #fff: */
+  background: radial-gradient(#000, #000 0.1em, #fff 0.1em, #fff), #fff;
+  display: inline-block;
+  margin: 1%;
+  position: relative;
+  top: 50%;
+  width: 380px;
+  height: 380px;
+  opacity: 0;
+  transform: translateY(-40%);
+}
+
+/* Make it fade in + move up */
+.clock.show {
+  opacity: 1;
+  transform: translateY(-50%);
+  transition: all 2.5s 0.5s cubic-bezier(0.12, 1.03, 0.34, 1);
+}
+
+/* The “center pin” of the clock, automatically added via ::after in original code.
+     We’ll just keep it if you prefer. */
+.clock::after {
+  background: red; /* could use black or red */
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 4%;
+  height: 4%;
+  z-index: 10;
+}
+
+/* For the containers that rotate our hands */
+.minutes-container,
+.hours-container,
+.seconds-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* Animate the hour container once every 12h => 43200s 
+     (We’ll skip if we’re controlling with React’s inline style) */
+.hours-container {
+  animation: rotate 43200s infinite linear;
+}
+
+/* The black hour hand */
+.hours {
+  background: #000;
+  width: 3.5%;
+  height: 40%;
+  position: absolute;
+  left: 48.25%;
+  top: 22%;
+  transform-origin: 50% 71%;
+}
+
+/* The black minute hand */
+.minutes {
+  background: #000;
+  width: 3.5%;
+  height: 55%;
+  position: absolute;
+  left: 48.25%;
+  top: 7%;
+  transform-origin: 50% 78.5%;
+}
+
+/* The red second hand (or black if you want) */
+.seconds {
+  background: red;
+  width: 1.5%;
+  height: 42%;
+  position: absolute;
+  left: 49.25%;
+  top: 20%;
+  transform-origin: 50% 71%;
+  z-index: 8;
+}
+
+/* Some transitions for bounce effect. You can remove if you prefer smooth rotation. */
+.bounce .minutes-container {
+  transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+}
+.bounce .seconds-container {
+  transition: transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+}
+
+/* The keyframe for a full rotation, used by “hours-container” etc.
+     Actually we do not rely on it if we are controlling angles in React,
+     but we keep it for reference. */
+@keyframes rotate {
+  100% {
+    transform: rotateZ(360deg);
+  }
+}

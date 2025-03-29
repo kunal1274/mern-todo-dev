@@ -1,0 +1,58 @@
+.clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Adjust height as needed */
+  position: sticky;
+  top: 0;
+  background: white; /* Ensure it's visible against the background */
+  z-index: 1000; /* Keep it above other elements */
+  padding: 10px;
+}
+
+.face {
+  width: 80px; /* Adjust for a smaller sticky clock */
+  height: 80px;
+  background: white;
+  border: 3px solid black;
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: bottom;
+  transition-timing-function: steps(1);
+}
+
+.hour {
+  width: 4px;
+  height: 20px;
+  background: black;
+}
+
+.minute {
+  width: 3px;
+  height: 30px;
+  background: black;
+}
+
+.second {
+  width: 1.5px;
+  height: 35px;
+  background: red;
+}
+
+.centerDot {
+  width: 5px;
+  height: 5px;
+  background: black;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

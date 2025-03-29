@@ -1,0 +1,72 @@
+/* A free 7-segment style font (replace with your own link/file).
+   Example: using "DS-Digital" or "Digital-7" from a known source.
+   Or comment this out and rely on a local .ttf if you prefer.
+*/
+
+/*
+@font-face {
+  font-family: 'Digital-7';
+  src: url('./fonts/digital-7.ttf') format('truetype');
+}
+*/
+
+body {
+  background: #f0f0f0; /* or #27292A as in your original snippet */
+  font-family: "Helvetica", sans-serif;
+  margin: 0;
+  padding: 2em;
+  text-align: center;
+}
+
+.clock-container {
+  display: inline-block;
+  background: #ddd;
+  padding: 1em 2em;
+  border-radius: 0.5em;
+  text-align: center;
+  min-width: 300px;
+  /* optional shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* The top row: MON TUE WED THU FRI SAT SUN */
+.clock-weekdays {
+  color: #aaa;
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 0.2em;
+}
+
+.clock-weekdays span {
+  flex: 1;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+/* Highlight the active day in darker text */
+.clock-weekdays .active-day {
+  color: #222; /* or #555 if you like a subtle highlight */
+  font-weight: 600;
+}
+
+/* The row with the big digits and AM/PM on the right */
+.clock-time {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+/* The big 7-segment style digits */
+.time-digits {
+  font-family: "Digital-7", "DS-DIGI", "Courier New", monospace;
+  font-size: 2.5em;
+  color: #303030;
+  letter-spacing: 0.05em;
+}
+
+/* AM/PM to the right of the digits */
+.time-ampm {
+  margin-left: 0.5em;
+  font-size: 1.2em;
+  color: #666;
+}

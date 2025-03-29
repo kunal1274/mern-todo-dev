@@ -1,0 +1,238 @@
+body {
+  margin: 0;
+}
+
+/* Gray square behind the clock */
+.under {
+  background-color: rgba(200, 200, 200, 0.9);
+  width: 180px;
+  height: 180px;
+  position: relative;
+  border-radius: 10px;
+  left: 20%;
+  top: 20%;
+  margin-left: -215px;
+  margin-top: -215px; /* ~ half the height */
+  z-index: 0;
+}
+
+/* The container that holds the clock */
+.demo-container.clocks {
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+/* The circular clock face */
+.clock {
+  border-radius: 50%;
+  background: radial-gradient(#000, #000 0.1em, #fff 0.1em, #fff), #fff;
+  display: inline-block;
+  margin: 1%;
+  position: relative;
+  top: 50%;
+  width: 150px;
+  height: 150px;
+  opacity: 0;
+  transform: translateY(-40%);
+}
+
+/* Fade + shift into place */
+.clock.show {
+  opacity: 1;
+  transform: translateY(-50%);
+  transition: all 2.5s 0.5s cubic-bezier(0.12, 1.03, 0.34, 1);
+}
+
+/* The center circle is red by default; you can change to black if you like */
+.clock::after {
+  background: red;
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 4%;
+  height: 4%;
+  z-index: 10;
+}
+
+/* The containers for each hand - we rotate them with inline style */
+.minutes-container,
+.hours-container,
+.seconds-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* 
+    The animations in your snippet (like rotate 43200s, rotate 3600s) 
+    are replaced by React's inline style. So we skip them here.
+  */
+
+/* The "bounce" transitions for minute & second containers. 
+     This gives a subtle step/bounce if you like. 
+  */
+/*
+.bounce .minutes-container {
+  transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+}
+.bounce .seconds-container {
+  transition: transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+}
+*/
+
+/* Bounce for the minute container is okay: */
+
+/* .bounce .minutes-container {
+  transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+} */
+
+/* HIGHLIGHT: remove or override transitions for .seconds-container: */
+/* .bounce .seconds-container {
+  transition: transform 0.2s cubic-bezier(.4,2.08,.55,.44);
+  transition: none !important; 
+}  */
+
+/* The black hour hand rectangle */
+/* .hours {
+  background: #000;
+  width: 3.5%;
+  height: 40%;
+  position: absolute;
+  left: 48.25%;
+  top: 22%;
+  transform-origin: 50% 71%;
+} */
+
+/* The black minute hand rectangle */
+/* .minutes {
+  background: #000;
+  width: 3.5%;
+  height: 55%;
+  position: absolute;
+  left: 48.25%;
+  top: 7%;
+  transform-origin: 50% 78.5%;
+} */
+
+/* The red second hand (or black if you prefer) */
+/* .seconds {
+  background: red;
+  width: 1.5%;
+  height: 42%;
+  position: absolute;
+  left: 49.25%;
+  top: 20%;
+  transform-origin: 50% 71%;
+  z-index: 8;
+} */
+
+/* 
+  ****************************
+  1) RE-ENABLING BOUNCE ON ALL
+  ****************************
+*/
+.bounce .hours-container {
+  transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+}
+.bounce .minutes-container {
+  transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+}
+.bounce .seconds-container {
+  transition: transform 0.2s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+}
+
+/* 
+    ****************************
+    2) HOUR HAND: SHORTEST + THICKEST
+    ****************************
+  */
+.hours {
+  background: #000;
+  /* widen the hour hand, so thickness is bigger than minute, second */
+  width: 3%; /* was 3.5% or 2%; bigger = thicker */
+  height: 35%; /* shorter length so it doesn't reach as far */
+  position: absolute;
+  left: 48.5%; /* center it slightly for the new width */
+  top: 25%; /* lowered so it starts more inward */
+  transform-origin: 50% 70%;
+}
+
+/* 
+    ****************************
+    3) MINUTE HAND: MEDIUM LENGTH + MEDIUM THICKNESS
+    ****************************
+  */
+.minutes {
+  background: #0c0c0c;
+  width: 2%; /* thinner than hour's 3%? Actually let's pick something a bit smaller or bigger? 
+                         Actually we want minute less thick than hour => let's do 2%  */
+  height: 50%; /* mid length => not as long as second but longer than hour */
+  position: absolute;
+  left: 49%;
+  top: 15%; /* position for a mid length */
+  transform-origin: 50% 100%;
+}
+
+/* 
+    ****************************
+    4) SECOND HAND: LONGEST + THINNEST
+    ****************************
+  */
+.seconds {
+  background: red;
+  width: 1%; /* thinnest */
+  height: 60%; /* longest - extends near clock edge */
+  position: absolute;
+  left: 49.5%;
+  top: 4%; /* positioned higher so it extends more */
+  transform-origin: 50% 100%;
+  z-index: 8;
+}
+
+/* Other classes like .ios7, .simple, .station, etc. 
+     We keep them so your "clock ios7 simple station js-london" matches. 
+  */
+.clock.station {
+  background: #fff
+    url("https://cssanimation.rocks/assets/images/posts/clocks/ios_clock.svg")
+    no-repeat center;
+  background-size: 95%;
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2) inset;
+}
+
+.clock.ios7 {
+  background: #fff
+    url("https://cssanimation.rocks/assets/images/posts/clocks/ios_clock.svg")
+    no-repeat center;
+  background-size: 88%;
+}
+.clock.ios7:before {
+  background: black;
+  border-radius: 50%;
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6%;
+  height: 6%;
+  z-index: 0;
+}
+
+.clock.simple {
+  background: #fff
+    url("https://cssanimation.rocks/assets/images/posts/clocks/ios_clock.svg")
+    no-repeat center;
+  background-size: 88%;
+}

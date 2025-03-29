@@ -1,0 +1,138 @@
+.metal-clock-container {
+  /* 
+       Just a flex container to center or size the clock. 
+       You could also place this clock absolutely or within any layout. 
+    */
+  display: inline-block;
+  position: relative;
+  width: 300px; /* Adjust size as you want */
+  height: 300px;
+  background: #27292a; /* Dark background behind the ring (like in your screenshot) */
+  border-radius: 50%;
+  overflow: hidden; /* so ring shadows don’t expand container */
+}
+
+/* Outer ring with a metallic style via shadows/gradients */
+.outer-ring {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border-radius: 50%;
+
+  /* metallic gradient approach:
+       We do a radial gradient that goes from a lighter steel color to darker. 
+    */
+  background: radial-gradient(
+    circle at 50% 50%,
+    #cccccc 0%,
+    #909090 40%,
+    #333333 100%
+  );
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4), 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+/* The actual clock face in the center */
+.clock-face {
+  position: absolute;
+  top: 6%;
+  left: 6%;
+  width: 88%;
+  height: 88%;
+  border-radius: 50%;
+  background: #f7f5e7; /* Off-white, slightly warm tone */
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.2), 0 0 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Numerals around the face (like 12,1,2...). 
+     We'll absolutely position them, rotate, etc.
+  */
+.clock-number {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: 50% 50%;
+}
+
+/* The text is unrotated back so it stays upright. */
+.clock-number span {
+  display: block;
+  font-size: 1.5em;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  color: #000;
+  transform-origin: 50% 50%;
+  user-select: none;
+}
+
+/* A small label near the bottom. We'll just center it. */
+.quartz-label {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.7em;
+  color: #444;
+  font-family: Arial, sans-serif;
+  user-select: none;
+}
+
+/* The center pivot circle (over the hands pivot) */
+.center-pin {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #222; /* black center */
+  z-index: 10; /* above hands if needed */
+}
+
+/* Hour, minute, second hands are absolutely placed from the center,
+     and we rotate them with inline styles from React. 
+     We'll define their shapes with top/left, transforms. 
+  */
+
+/* The hour hand (shorter, thicker) */
+.hour-hand {
+  position: absolute;
+  width: 8px;
+  height: 30%; /* 30% of face radius */
+  background: #333;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%; /* pivot at bottom center of the rectangle */
+  border-radius: 4px;
+  z-index: 6;
+}
+
+/* The minute hand (longer, slightly thinner) */
+.minute-hand {
+  position: absolute;
+  width: 6px;
+  height: 40%;
+  background: #333;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 3px;
+  z-index: 7;
+}
+
+/* The second hand (thin, red) */
+.second-hand {
+  position: absolute;
+  width: 2px;
+  height: 45%;
+  background: red;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  z-index: 8;
+}
