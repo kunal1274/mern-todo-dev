@@ -1,8 +1,10 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { BrowserRouter as Router } from 'react-router-dom';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.jsx";
+import { BrowserRouter as Router } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext.jsx";
+import { AuthProviderDetailed } from "./context/AuthContextDetailed.jsx";
 
 // Sentry.init({
 //   dsn: "https://fc4cb70344f9d6c3ea3ac1162e65fbe6@o4508682796531712.ingest.us.sentry.io/4508682802364416",
@@ -19,11 +21,12 @@ import { BrowserRouter as Router } from 'react-router-dom';
 //   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
 // });
 
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>  
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
     <Router>
-      <App/>
+      <AuthProviderDetailed>
+        <App />
+      </AuthProviderDetailed>
     </Router>
-  </StrictMode>,
-)
+  </StrictMode>
+);

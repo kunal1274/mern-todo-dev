@@ -1,8 +1,6 @@
 // src/App.jsx
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import Login from "./pages/Login";
-import VerifyOtp from "./pages/VerifyOtp";
+import { Routes, Route, Link, Outlet, Navigate } from "react-router-dom";
 import TestManagement from "./pages/TestManagement";
 import TestMap from "./TestMapMultipleMarkers";
 import MapWithDraggablePinAndDirections from "./TestMapDirections";
@@ -18,6 +16,10 @@ import ViewUserGroup from "./pages/SalesModule/ViewUserGroupsPage";
 import EditUserGroup from "./pages/SalesModule/EditUserGroupsPage";
 import HomePage from "./pages/Landing/HomePage";
 import Layout from "./components/landing/Layout";
+import Login from "./pages/Authentication/Login";
+import { useAuthDetailed } from "./context/AuthContextDetailed";
+import GoogleAuthCallback from "./pages/Authentication/GoogleAuthCallback";
+import VerifyOtp from "./pages/Authentication/VerifyOtp";
 
 function App1() {
   return (
@@ -80,15 +82,55 @@ function App1() {
   );
 }
 
+const ProtectedRoute = () => {
+  const { isAuthenticated } = useAuthDetailed();
+  console.log("line 1204 : is Authenticated", isAuthenticated);
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" />;
+};
+
 function App() {
+  const { loading, elapsedSeconds } = useAuthDetailed();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
+        <p className="text-xl font-semibold text-gray-700 mb-2">
+          Reauthenticating...
+        </p>
+        <p className="text-sm text-gray-500">
+          Elapsed time: {elapsedSeconds ? elapsedSeconds.toFixed(2) : "0.00"}s
+        </p>
+      </div>
+    );
+  }
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/another" element={<UserGroupsPage />} />
-        {/* etc. */}
-      </Routes>
-    </Layout>
+    <Routes>
+      {/* Public routes */}
+      <Route path="/" element={<Login />} />
+      <Route path="/verify-otp" element={<VerifyOtp />} />
+      <Route path="/auth/google/callback" element={<GoogleAuthCallback />} />
+      {/**Protected Routes */}
+      {/* Protected Layout Wrapper */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<HomePage />} />
+          <Route path="/users" element={<UsersPage />} />
+          <Route path="/user-groups" element={<UserGroupsPage />} />
+          <Route path="/user-groups/:groupId" element={<ViewUserGroup />} />
+          <Route
+            path="/user-groups/:groupId/edit"
+            element={<EditUserGroup />}
+          />
+          <Route path="/tag-management" element={<TagManagement />} />
+          <Route path="/test-management" element={<TestManagement />} />
+        </Route>
+      </Route>
+
+      {/* Catch-all route */}
+      <Route path="*" element={<div>Route Not Found in Frontend</div>} />
+
+      {/* etc. */}
+    </Routes>
   );
 }
 export default App;

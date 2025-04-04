@@ -1,13 +1,22 @@
 // src/api/index.js
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  //baseURL: 'http://localhost:5002/api', // Update this to your backend URL // for testing locally 
-  baseURL: import.meta.env.VITE_BACKEND_URL, // for testing locally ewith environment variable
-  //baseURL: import.meta.env.VITE_BACKEND_LIVE_DEV_URL || import.meta.env.VITE_BACKEND_URL, // dev https with ngrok running at 5001 port 
+  baseURL: import.meta.env.VITE_BACKEND_URL,
 });
 
-console.log("src/api/index.js = requesting api client end",api)
+// Attach a request interceptor to set the Authorization header
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("authToken"); // or "token"
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default api;
-

@@ -3,6 +3,7 @@
 import React from "react";
 import Sidebar from "./Sidebar.jsx";
 import Topbar from "./Topbar.jsx";
+import { Outlet } from "react-router-dom";
 
 function Layout({ children }) {
   return (
@@ -14,7 +15,8 @@ function Layout({ children }) {
       <div className="flex-1 flex flex-col">
         <Topbar />
         <main className="flex-1 overflow-hidden hover:overflow-auto bg-gray-50 p-4">
-          {children}
+          {/* {children} */}
+          <Outlet />
         </main>
       </div>
     </div>
