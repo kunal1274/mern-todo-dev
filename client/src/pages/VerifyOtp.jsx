@@ -1,25 +1,25 @@
 // src/pages/VerifyOtp.jsx
-import React, { useState } from 'react';
-import { verifyOtp } from '../api/auth';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { verifyOtp } from "../api/auth";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function VerifyOtp() {
   const location = useLocation();
   const navigate = useNavigate();
   const { phoneNumber, email, method } = location.state || {};
-  const [otp, setOtp] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [otp, setOtp] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleVerify = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     if (!otp) {
-      setError('Please enter the OTP.');
-       // Capture error in Sentry
-             Sentry.captureException(err);
+      setError("Please enter the OTP.");
+      // Capture error in Sentry
+      //Sentry.captureException(err);
       return;
     }
 
@@ -31,17 +31,17 @@ function VerifyOtp() {
       //   localStorage.setItem('token', response.token);
       //   navigate('/dashboard'); // Change to your desired route
       // }
-      navigate('/test-management')
+      navigate("/test-management");
     } catch (err) {
       if (err.errors) {
-        const messages = err.errors.map((error) => error.msg).join(', ');
+        const messages = err.errors.map((error) => error.msg).join(", ");
         setError(messages);
-         // Capture error in Sentry
-               Sentry.captureException(err);
+        // Capture error in Sentry
+        //Sentry.captureException(err);
       } else {
-        setError(err.msg || 'Failed to verify OTP');
-         // Capture error in Sentry
-               Sentry.captureException(err);
+        setError(err.msg || "Failed to verify OTP");
+        // Capture error in Sentry
+        //Sentry.captureException(err);
       }
     }
   };
@@ -67,12 +67,8 @@ function VerifyOtp() {
             Verify OTP
           </button>
         </form>
-        {error && (
-          <p className="text-red-500 text-center">{error}</p>
-        )}
-        {success && (
-          <p className="text-green-500 text-center">{success}</p>
-        )}
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        {success && <p className="text-green-500 text-center">{success}</p>}
       </div>
     </div>
   );
