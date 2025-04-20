@@ -68,11 +68,13 @@ function Login() {
     // Input Validation
     if (!phoneNumber && !email) {
       setError("Please provide either a phone number or an email.");
+      stopSendingTimer();
       return;
     }
 
     if (!["whatsapp", "sms", "email"].includes(method)) {
       setError("Invalid method selected.");
+      stopSendingTimer();
       return;
     }
 
@@ -81,7 +83,14 @@ function Login() {
       stopSendingTimer();
       // Navigate to OTP Verification Page, passing necessary data
       navigate("/verify-otp", {
-        state: { phoneNumber, email, method, otpType, otpLength },
+        state: {
+          phoneNumber,
+          email,
+          method,
+          otpType,
+          otpLength,
+          otpSent: true,
+        },
       });
     } catch (err) {
       stopSendingTimer();
@@ -118,7 +127,7 @@ function Login() {
           <img src={quipriseLogo} alt="Quiprise Logo" className="w-24 h-24" />
           {/* <h1 className="text-3xl font-bold text-blue-700">namAmi</h1> */}
         </div>
-        <h1 className="text-2xl font-bold text-purple-500 text-center">
+        <h1 className="text-2xl font-bold text-blue-500 text-center">
           Login / Signup
         </h1>
 
@@ -245,9 +254,9 @@ function Login() {
           <button
             type="submit"
             disabled={sendingOtp}
-            className="w-full px-3 py-2 text-white bg-purple-500 rounded hover:bg-purple-600 transition duration-300"
+            className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 transition duration-300"
           >
-            {sendingOtp ? (
+            {sendingOtp && !error ? (
               "Sending OTP..."
             ) : (
               <>
@@ -277,9 +286,7 @@ function Login() {
           className="flex items-center justify-center w-full px-3 py-2 border rounded hover:bg-gray-100 transition duration-300"
         >
           <img src={googleLogo} alt="Google Logo" className="w-6 h-6 mr-2" />
-          <span className="font-medium text-purple-700">
-            Sign in with Google
-          </span>
+          <span className="font-medium text-gray-700">Sign in with Google</span>
         </button>
       </div>
     </div>

@@ -12,7 +12,8 @@ import {
   FaAngleUp,
   FaSignOutAlt,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { FaBuildingUser } from "react-icons/fa6";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthDetailed } from "../../context/AuthContextDetailed";
 
 function Sidebar() {
@@ -87,13 +88,13 @@ function Sidebar() {
             </a>
           </li>
           <li>
-            <a
-              href="#settings"
+            <Link
+              to={"/companies"}
               className="flex items-center gap-2 px-4 py-3 hover:bg-gray-50 text-gray-700"
             >
-              <FaCog size={16} />
-              {!collapsed && "Settings"}
-            </a>
+              <FaBuildingUser size={18} />
+              {!collapsed && "Company Module"}
+            </Link>
           </li>
           <li>
             <a

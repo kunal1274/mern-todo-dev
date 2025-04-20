@@ -1,3 +1,13 @@
+@import "react-toastify/dist/ReactToastify.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Safari scrollbar fix (optional) */
+*::-webkit-scrollbar {
+  @apply w-1.5;
+}
+*::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-lg;
+}
