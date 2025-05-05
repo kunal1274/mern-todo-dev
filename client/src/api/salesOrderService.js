@@ -1,8 +1,15 @@
 import axios from "axios";
 
-const API = axios.create({
+export const API = axios.create({
   baseURL:
-    import.meta.env.VITE_API_URL_ERP || "http://localhost:5050/fms/api/v0",
+    import.meta.env.VITE_BACKEND_API_URL_ERP ||
+    "http://localhost:5050/fms/api/v0",
+});
+
+export const API_FILE_UPLOAD = axios.create({
+  baseURL:
+    import.meta.env.VITE_BACKEND_API_URL_ERP ||
+    "http://localhost:5050/fms/api/v0",
 });
 
 // LIST with query params
@@ -36,7 +43,7 @@ export const triggerSOAction1 = (salesOrderId, action) =>
 export const triggerSOAction = (salesOrderId, action) =>
   API.patch(`/sales-orders/${salesOrderId}/actions/${action}`);
 
-// allow a payload (e.g. qty) ------------------------------------
+// allow a payload (e.g. qty) ------------------------------------NOT IN USE
 export const triggerSOActionWithData1 = (salesOrderId, action, data) =>
   API.patch(`/sales-orders/${salesOrderId}/actions/${action}`, data);
 
@@ -58,17 +65,61 @@ export const addInvoice = (id, payload) =>
 export const addPayment = (id, payload) =>
   API.post(`/sales-orders/${id}/payments`, payload);
 
-// export stub ------------------------------------------------------
-export const exportSingle = (id) =>
-  API.get(`/sales-orders/${id}/export`, { responseType: "blob" });
+// // export stub ------------------------------------------------------
+// export const exportSingle = (id) =>
+//   API.get(`/sales-orders/${id}/export`, { responseType: "blob" });
 
-/* -------- duplicate -------- */
+// /* -------- duplicate -------- */
+// export const duplicateSO = (id) =>
+//   API.post(`/sales-orders/${id}/duplicate`).then((r) => r.data);
+
+export const exportSalesOrders = (fmt = "xlsx") =>
+  API.get(`/sales-orders/export?format=${fmt}`, {
+    responseType: "blob",
+    //responseType: "arraybuffer",
+  }).then((res) => res.data);
+
 export const duplicateSO = (id) =>
   API.post(`/sales-orders/${id}/duplicate`).then((r) => r.data);
+
+export const importSalesOrders = async (file) => {
+  // const fd = new FormData();
+  // fd.append("file", file);
+
+  // return await API.post("/sales-orders/import", fd, {
+  //   headers: { "Content-Type": "multipart/form-data" },
+  // }).then((r) => r.data); // server returns {created,errors}
+  const fd = new FormData();
+  fd.append("file", file);
+  const res = await API.post("/sales-orders/import", fd, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+};
 
 /* -------- banks (stub) ----- */
 export const fetchBanks = (id) => API.get(`/sales-orders/${id}/banks`);
 export const addBank = (id, p) => API.post(`/sales-orders/${id}/banks`, p);
+
+export const uploadMulterFiles = (id, files) => {
+  const data = new FormData();
+  [...files].forEach((f) => data.append("files", f));
+  console.log("83 so service", files, data);
+
+  return API_FILE_UPLOAD.post(`/sales-orders/${id}/files-upload`, data);
+};
+
+export const listFiles = (id) =>
+  API_FILE_UPLOAD.get(`/sales-orders/${id}/files-upload`).then((r) => r.data); // <- returns array
+
+export const deleteFile = (id, fileId) =>
+  API_FILE_UPLOAD.delete(`/sales-orders/${id}/files-upload/${fileId}`).then(
+    (r) => r.data
+  );
+
+// ── New helper for deletion ─────────────────────────
+export const deleteFile1 = (entity, id, fileId) =>
+  API.delete(`/upload/${entity}/${id}/files/${fileId}`);
 
 /* ---------- export ---------- */
 

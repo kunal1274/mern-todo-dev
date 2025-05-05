@@ -1,3 +1,5 @@
+//1. export import duplicate are working but not all fields are added
+
 import { useState, useRef } from "react";
 import {
   FiPlus,

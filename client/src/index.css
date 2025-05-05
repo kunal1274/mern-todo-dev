@@ -11,3 +11,11 @@
 *::-webkit-scrollbar-thumb {
   @apply bg-gray-300 rounded-lg;
 }
+
+/* ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded;
+} */

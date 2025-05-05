@@ -47,6 +47,9 @@ import TopbarCrystal from "./components/shyam-db/Topbar";
 import SidebarCrystal from "./components/shyam-db/Sidebar";
 import SalesOrderListCrystal from "./pages/shyam-db/SalesOrderList";
 import SalesOrderDetails from "./pages/shyam-db/SalesOrderDetails";
+import InventoryLanding from "./components/shyam-db/inventory/InventoryLanding";
+import TabBar from "./components/shyam-db/layout/TabBar";
+import SiteList from "./pages/shyam-db/inventory/SiteList";
 
 function App1() {
   return (
@@ -235,11 +238,14 @@ function AppCrystalDashboard() {
       {/* right side */}
       <div className="flex flex-1 flex-col overflow-hidden">
         <TopbarCrystal toggleSidebar={() => setSidebarOpen((s) => !s)} />
+        <TabBar />
         <main className="flex-1 overflow-y-auto px-6 pb-10">
           <Routes>
             <Route path="/" element={<DashboardCrystal />} />
             <Route path="/sales-orders" element={<SalesOrderListCrystal />} />
             <Route path="/sales-orders/:id" element={<SalesOrderDetails />} />
+            <Route path="/inventory" element={<InventoryLanding />} />
+            <Route path="/sites" element={<SiteList />} />
           </Routes>
         </main>
       </div>

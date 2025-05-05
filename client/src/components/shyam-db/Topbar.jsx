@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FiMenu,
   FiSearch,
@@ -7,8 +8,11 @@ import {
   FiUser,
   FiGift,
 } from "react-icons/fi";
+import SalesOrderModal from "./SalesOrderModal";
+import SettingsModal from "./SettingsModal";
 
 export default function TopbarCrystal({ toggleSidebar }) {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b bg-white px-6">
       {/* burger */}
@@ -40,7 +44,12 @@ export default function TopbarCrystal({ toggleSidebar }) {
 
       {/* icons */}
       <div className="flex items-center gap-3 ml-auto md:ml-0">
-        <button className="rounded p-2 hover:bg-gray-100">
+        <button
+          className="rounded p-2 hover:bg-gray-100"
+          onClick={() => {
+            setModalOpen(true);
+          }}
+        >
           <FiSettings />
         </button>
         <button className="rounded p-2 hover:bg-gray-100">
@@ -54,6 +63,8 @@ export default function TopbarCrystal({ toggleSidebar }) {
           <FiUser />
         </button>
       </div>
+
+      <SettingsModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </header>
   );
 }

@@ -1,8 +1,17 @@
-import { FiMenu, FiCircle, FiColumns, FiHome } from "react-icons/fi";
+import {
+  FiMenu,
+  FiCircle,
+  FiColumns,
+  FiHome,
+  FiDisc,
+  FiShield,
+} from "react-icons/fi";
+import LinkTab from "./layout/LinkTab";
 
 const sections = [
   { title: "Sales", items: 3 },
   { title: "Purchase", items: 10 },
+  { titel: "Inventory", items: 3 },
   { title: "Items", items: 5 },
   { title: "Others", items: 6 },
 ];
@@ -103,6 +112,12 @@ export default function SidebarCrystal({ isOpen, toggleSidebar }) {
             ))}
           </div>
         ))}
+        <LinkTab to="/inventory" title="Inventory" icon={FiDisc}>
+          {isOpen && "Inventory"}
+        </LinkTab>
+        <LinkTab to="/sales-orders" title="Sales Orders List" icon={FiShield}>
+          {isOpen && "Sales Orders"}
+        </LinkTab>
       </nav>
     </aside>
   );

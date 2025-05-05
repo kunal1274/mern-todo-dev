@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { AuthProviderDetailed } from "./context/AuthContextDetailed.jsx";
+import { TabManagerProvider } from "./context/shyam-db/TabManager.jsx";
 
 // Sentry.init({
 //   dsn: "https://fc4cb70344f9d6c3ea3ac1162e65fbe6@o4508682796531712.ingest.us.sentry.io/4508682802364416",
@@ -25,7 +26,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Router>
       <AuthProviderDetailed>
-        <App />
+        <TabManagerProvider>
+          <App />
+        </TabManagerProvider>
       </AuthProviderDetailed>
     </Router>
   </StrictMode>

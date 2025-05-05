@@ -15,6 +15,10 @@ export default {
           500: "#2159d3",
           600: "#2563eb",
         },
+        brandGrey: {
+          400: "EDF2F7",
+          600: "CBD5E0",
+        },
       },
       fontFamily: { sans: ["Inter", "sans-serif"] },
     },

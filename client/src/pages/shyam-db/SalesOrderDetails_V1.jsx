@@ -24,12 +24,9 @@ import BankModal from "../../components/shyam-db/BankModal.jsx";
 // import InsightsPanel from "../../components/ai/InsightsPanel.jsx";
 import PromptDrawer from "../../components/ai/PromptDrawer.jsx";
 import ChatBot from "../../components/ai/AIChatBot.jsx";
-// import FileUploadModal from "../../components/shyam-db/FileUploadModal.jsx";
+import FileUploadModal from "../../components/shyam-db/FileUploadModal.jsx";
 // import { uploadFiles as uploadSOFiles } from "../../api/salesOrderService.js";
-// import { toast } from "react-toastify";
-// import FileGallery from "../../components/shyam-db/FileGallery.jsx";
-import FileUploadModal from "../../components/shyam-db/bb3FileUploadModal.jsx";
-import FileGallery from "../../components/shyam-db/bb3FileGallery.jsx";
+import { toast } from "react-toastify";
 // import FileGallery from "../../components/shyam-db/FileGallery.jsx";
 
 function FileIcon({ ext }) {
@@ -67,7 +64,7 @@ export default function SalesOrderDetails() {
   const [bankModal, setBankModal] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  // const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
     fetchSalesOrder(id).then(setSo);
@@ -102,8 +99,6 @@ export default function SalesOrderDetails() {
       icon: FiFileText,
     },
   ];
-
-  // const updateFiles = (arr) => setSo((s) => ({ ...s, files: arr }));
 
   return (
     <section className="p-8">
@@ -330,7 +325,7 @@ export default function SalesOrderDetails() {
       <div className="mt-8 rounded-lg border bg-white p-6">
         <div className="flex items-center justify-between mb-4">
           <h4 className="text-lg font-medium">
-            Attachments ({so?.attachedFiles?.length})
+            Attachments ({so?.files?.length})
           </h4>
           <button
             onClick={() => setUploadOpen(true)}
@@ -338,8 +333,28 @@ export default function SalesOrderDetails() {
           >
             + Upload
           </button>
+          {/* <button
+            onClick={() => setUploadOpen(true)}
+            className="mx-2 rounded border px-2 py-1 text-xs hover:bg-gray-50"
+          >
+            Attach&nbsp;Files
+          </button> */}
         </div>
-        {/* 
+
+        {/* <FileGallery files={so.files || []} /> */}
+        {/* <FileGallery
+          entity="sales-orders"
+          parentId={so._id}
+          files={so.files}
+          onDelete={(fileId) =>
+            deleteFile("sales-orders", so._id, fileId)
+              .then((r) => setSo((s) => ({ ...s, files: r.data }))) // r.data === updated files array
+              .catch((err) =>
+                toast.error(err.response?.data?.message || "Remove failed")
+              )
+          }
+        /> */}
+
         {so?.files?.length ? (
           <ul className="space-y-1 text-sm">
             {so.files.map((f) => {
@@ -357,6 +372,7 @@ export default function SalesOrderDetails() {
                         className="w-[40px] h-[40px] object-cover border rounded-md mr-3"
                       />
                     ) : (
+                      // <span className="mr-3">📄</span>
                       <FileIcon ext={ext} className="mr-3" />
                     )}
 
@@ -367,6 +383,10 @@ export default function SalesOrderDetails() {
                     >
                       {f.originalName}
                     </a>
+
+                    {/* <span className="ml-2 text-gray-400 text-xs">
+                      {f.fileType}
+                    </span> */}
                   </div>
                 </li>
               );
@@ -374,40 +394,10 @@ export default function SalesOrderDetails() {
           </ul>
         ) : (
           <p className="text-sm text-gray-500">No files.</p>
-        )} */}
-        <div className="overflow-auto h-32">
-          <FileGallery
-            soId={so._id}
-            files={so.attachedFiles}
-            //onChange={(arr) => setSo((s) => ({ ...s, attachedFiles: arr }))}
-            onChange={(newArr) =>
-              setSo((prev) => ({ ...prev, attachedFiles: newArr }))
-            }
-          />
-        </div>
+        )}
       </div>
 
-      {/* <FileUploadModal
-        open={uploadOpen}
-        soId={so._id}
-        onClose={() => setUploadOpen(false)}
-        onDone={(arr) => setSo((s) => ({ ...s, files: arr }))}
-      /> */}
       <FileUploadModal
-        open={uploadOpen}
-        soId={so._id}
-        onClose={() => setUploadOpen(false)}
-        //onDone={(newFiles) => setFiles((f) => [...f, ...newFiles])}
-        //onDone={(newFiles) => setSo((s) => ({ ...s, attachedFiles: newFiles }))}
-        onDone={(newFiles) =>
-          setSo((prev) => ({
-            ...prev,
-            attachedFiles: [...(prev.attachedFiles || []), ...newFiles],
-          }))
-        }
-      />
-
-      {/* <FileUploadModal
         open={uploadOpen}
         onClose={() => setUploadOpen(false)}
         onUpload={(files) => {
@@ -421,6 +411,13 @@ export default function SalesOrderDetails() {
               toast.error(err.response?.data?.message || "Upload failed");
             });
         }}
+      />
+
+      {/* <FileUploadModal
+        open={uploadOpen}
+        soId={so._id}
+        onClose={() => setUploadOpen(false)}
+        onDone={(newFiles) => setSo((s) => ({ ...s, files: newFiles }))}
       /> */}
 
       {/* history tabs */}
@@ -673,3 +670,13 @@ function StickyBar({ children, className = "" }) {
   );
 }
 // original
+/* ----------------- util ------------------ */
+function StickyBar1({ children, className = "" }) {
+  return (
+    <div
+      className={`sticky top-0 z-30 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b ${className}`}
+    >
+      {children}
+    </div>
+  );
+}

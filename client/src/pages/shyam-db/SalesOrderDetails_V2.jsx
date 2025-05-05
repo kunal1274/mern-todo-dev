@@ -67,7 +67,7 @@ export default function SalesOrderDetails() {
   const [bankModal, setBankModal] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
-  // const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([]);
 
   useEffect(() => {
     fetchSalesOrder(id).then(setSo);
@@ -103,7 +103,7 @@ export default function SalesOrderDetails() {
     },
   ];
 
-  // const updateFiles = (arr) => setSo((s) => ({ ...s, files: arr }));
+  const updateFiles = (arr) => setSo((s) => ({ ...s, files: arr }));
 
   return (
     <section className="p-8">
@@ -330,7 +330,7 @@ export default function SalesOrderDetails() {
       <div className="mt-8 rounded-lg border bg-white p-6">
         <div className="flex items-center justify-between mb-4">
           <h4 className="text-lg font-medium">
-            Attachments ({so?.attachedFiles?.length})
+            Attachments ({so?.files?.length})
           </h4>
           <button
             onClick={() => setUploadOpen(true)}
@@ -375,36 +375,19 @@ export default function SalesOrderDetails() {
         ) : (
           <p className="text-sm text-gray-500">No files.</p>
         )} */}
-        <div className="overflow-auto h-32">
-          <FileGallery
-            soId={so._id}
-            files={so.attachedFiles}
-            //onChange={(arr) => setSo((s) => ({ ...s, attachedFiles: arr }))}
-            onChange={(newArr) =>
-              setSo((prev) => ({ ...prev, attachedFiles: newArr }))
-            }
-          />
-        </div>
+
+        <FileGallery
+          soId={so._id}
+          files={so.files}
+          onChange={(arr) => setSo((s) => ({ ...s, files: arr }))}
+        />
       </div>
 
-      {/* <FileUploadModal
-        open={uploadOpen}
-        soId={so._id}
-        onClose={() => setUploadOpen(false)}
-        onDone={(arr) => setSo((s) => ({ ...s, files: arr }))}
-      /> */}
       <FileUploadModal
         open={uploadOpen}
         soId={so._id}
         onClose={() => setUploadOpen(false)}
-        //onDone={(newFiles) => setFiles((f) => [...f, ...newFiles])}
-        //onDone={(newFiles) => setSo((s) => ({ ...s, attachedFiles: newFiles }))}
-        onDone={(newFiles) =>
-          setSo((prev) => ({
-            ...prev,
-            attachedFiles: [...(prev.attachedFiles || []), ...newFiles],
-          }))
-        }
+        onDone={(arr) => setSo((s) => ({ ...s, files: arr }))}
       />
 
       {/* <FileUploadModal
@@ -673,3 +656,13 @@ function StickyBar({ children, className = "" }) {
   );
 }
 // original
+/* ----------------- util ------------------ */
+function StickyBar1({ children, className = "" }) {
+  return (
+    <div
+      className={`sticky top-0 z-30 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b ${className}`}
+    >
+      {children}
+    </div>
+  );
+}
